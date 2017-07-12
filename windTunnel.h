@@ -547,17 +547,3 @@ set(handles.ph, 'String', num2str(Phc));
 set(handles.powerwatts, 'String', num2str(power));
 set(handles.powerhp, 'String', num2str(powerhp));
 set(handles.cfm, 'String', num2str(cfm));
-
-E.	ANSYS User-Defined Function (UDF)  - 2D Wind Tunnel Inlet Pressure Profile
-
-#include "udf.h"                                                           DEFINE_PROFILE(pressure_profile,t,i)                                                              {                                                                                                 real x[ND_ND];                /* this will hold the position vector */                          real y;              										    face_t f;												  begin_f_loop(f,t);												 {														 F_CENTROID(x,f,t);											 y = x[1];												 F_PROFILE(f,t,i) = 100+50*y;								 }												  end_f_loop(f,t)										       }
-
-F.	ANSYS User-Defined Function (UDF)  - 2D Contraction Nozzle Inlet Pressure Profile
-	
-#include "udf.h"                                                           DEFINE_PROFILE(pressure_profile,t,i)                                                              {                                                                                                 real x[ND_ND];                /* this will hold the position vector */                          real y;              										    face_t f;												  begin_f_loop(f,t);												 {														 F_CENTROID(x,f,t);											 y = x[1];												 F_PROFILE(f,t,i) = 100+50*y-77;								 }												  end_f_loop(f,t)										       }
-
-G.	ANSYS User-Defined Function (UDF)  – 3D Wind Tunnel Inlet Pressure Profile
-
-#include"udf.h"						                   DEFINE_PROFILE(pressureprofile, thread, position) /* inlet x velocity = name of the x velocity *  {												     real x[ND_ND]; 				    /* this will hold the position vector */     real y,z,a; 											  face_t f;     					    /* f = all the cell faces on the boundary*/ begin_f_loop(f,thread) 	/* Loop Initialization - loop across all the cells in the face */  { 													F_CENTROID(x, f, thread); 									if((x[1] >= 0.003))                         /* x[1] is the y-coordinate ;  */					     /*  Condition A implies the upper half of the I and II Quadrant */		{														F_PROFILE(f, thread, position) = 650; /* The value of pressure for the Condition A													*/	}												else if((x[1] >= 0.001) && (x[1] < 0.003))   										/* Condition B - The lower half of the I and II Quadrant */			{ 														F_PROFILE(f, thread, position) = 300;   /* Pressure value for Condition B*/   	}												else 												{														F_PROFILE(f, thread, position) = 250;	/* Pressure value for Condition C */			}											       }												end_f_loop(f, thread)						/*  End of Loop */	       }
-
-
